@@ -1,7 +1,7 @@
 # esc-pad-table-array
 Tiny 1.7K function pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.
 
-## Installation
+## Install
 `npm install esc-pad-table-array`
 
 ## Example import and data
