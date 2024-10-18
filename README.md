@@ -41,7 +41,12 @@ console.log(padTableA(inputA, { headingA:['LAN IP', 'HOSTNAME'], align:'LR', fmt
 
 ### Example with heading (no underline), alignment and formatting
 ```javascript
-console.log(padTableA(inputA, { headingA:['LAN IP', 'HOSTNAME'], align:'LR', fmtA:[ colors.magenta, colors.blue ], headingChar:null }));
+console.log(padTableA(inputA, {
+  headingA:['LAN IP', 'HOSTNAME'],
+  headingChar:null,
+  align:'LR',
+  fmtA:[ colors.magenta, colors.blue ],
+}));
 ```
 ![image](https://github.com/user-attachments/assets/69e7e881-5e84-40d0-ac34-a99698bf7802)
 
