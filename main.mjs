@@ -1,6 +1,6 @@
 'use strict';
 
-const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ' }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ' }) => {
+const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true }) => {
   if (align) alignA = align.split('');
   const maxColumns = Math.max(...inputA.map( colsA => colsA.length )); // max number of columns of any row
   const maxColsA = Array.from({ length:maxColumns });
@@ -24,7 +24,13 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
 
   if (headingA.length!==0 && headingChar) fmtdRowsA.splice(1, 0, headingA.map( (_, colIndex) => headingChar.repeat(maxColLengthsA[colIndex]) )); // insert headingChar's between headingA row and first inputA row
 
-  const retFmtdRowsA = colDelim ? fmtdRowsA.map( colsA => colsA.join(colDelim) ) : fmtdRowsA; // optionally concat column arrays into row strings
+  const retFmtdRowsA = ( colDelim
+    ? ( trim
+        ? fmtdRowsA.map( colsA => colsA.join(colDelim).trim() )
+        : fmtdRowsA.map( colsA => colsA.join(colDelim) )
+      )
+    : fmtdRowsA
+  ); // optionally concat column arrays into row strings
 
   return rowDelim ? retFmtdRowsA.join(rowDelim) : retFmtdRowsA; // optionally concat rows into a string
 };
