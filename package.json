@@ -1,8 +1,9 @@
 {
   "name": "esc-pad-table-array",
   "version": "0.1.0",
-  "description": "Pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.",
+  "description": "Tiny 1.2K function pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.",
   "main": "main.mjs",
+  "types": "main.d.ts",
   "dependencies": {
   },
   "devDependencies": {},
@@ -14,8 +15,24 @@
     "url": "git+https://github.com/softwarecreations/esc-pad-table-array.git"
   },
   "keywords": [
-    "minimal-dependencies",
-    "simple"
+    "no dependencies",
+    "table",
+    "cli",
+    "columns",
+    "format",
+    "pad",
+    "padding",
+    "strings",
+    "array",
+    "terminal",
+    "simple",
+    "flexible",
+    "arrays",
+    "fast",
+    "reliable",
+    "stable",
+    "no nonsense",
+    "string"
   ],
   "author": "softwarecreations",
   "license": "MIT",

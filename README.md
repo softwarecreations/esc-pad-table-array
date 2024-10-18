@@ -1,5 +1,68 @@
 # esc-pad-table-array
-Pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.
+Tiny 1.7K function pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.
+
+## Installation
+`npm install esc-pad-table-array`
+
+## Example import and data
+```JavaScript
+import padTableA from 'esc-pad-table-array';
+const inputA = [
+  [ '192.168.1.4', 'apple.example.org' ],
+  [ '192.168.1.91', 'fig.example.org', 'fig.otherdomain.co.za' ],
+  [ '192.168.1.123', 'watermelon.example.org', 'watermelon.otherdomain.co.za' ],
+  [ '192.168.1.201', 'plum.example.org', 'plum.otherdomain.co.za' ],
+];
+```
+### Simplest example
+```javascript
+console.log(padTableA(inputA));
+```
+
+### Example with alignment
+```javascript
+console.log(padTableA(inputA, { alignA:[ 'L', 'R' ] }));
+```
+
+### Example with alignment
+```javascript
+console.log(padTableA(inputA, { align:'LR' }));
+```
+
+### Example with alignment and formatting
+```javascript
+console.log(padTableA(inputA, { align:'LR', fmtA:[ colors.magenta, colors.blue ] }));
+```
+
+### Example with heading, alignment and formatting
+```javascript
+console.log(padTableA(inputA, { headingA:['LAN IP', 'HOSTNAME'], align:'LR', fmtA:[ colors.magenta, colors.blue ] }));
+```
+
+### Example with heading (no underline), alignment and formatting
+```javascript
+console.log(padTableA(inputA, { headingA:['LAN IP', 'HOSTNAME'], align:'LR', fmtA:[ colors.magenta, colors.blue ], headingChar:null }));
+```
+
+### Example getting 2D array
+You can get a 1D or 2D array and do whatever you want with it, trivially.
+```javascript
+const tableAA = padTableA(inputA, { align:'LR', colDelim:null, rowDelim:null, paddingChar:'.' });
+
+console.log('tableAA', tableAA);
+
+const rowsA = tableAA.map( colsA => '|..' + colsA.join('...') + '..|' );
+
+const width = rowsA[0].length;
+
+console.log('='.repeat(width));
+
+rowsA.forEach( rowS => console.log(rowS) );
+
+console.log('='.repeat(width));
+```
+
+Get the table data and you can flip it any style.
 
 ## Project goals
 * No dependencies
@@ -10,22 +73,9 @@ Pads the cells of a 2D array of strings (table) by column, left/right aligned, o
 If I have ideas for something different, I'll make a new package rather than make breaking changes.
 
 ## Inspired by
-
-
-## Installation
-
-1. `npm install esc-pad-table-array`
-
-
-## Use
-```JavaScript
-import foo from 'esc-pad-table-array';
-
-```
+I looked what else was available and it was massively bloated and over-complicated.
 
 ## Notes
-
-
 Have fun!
 
 ### Say thanks
