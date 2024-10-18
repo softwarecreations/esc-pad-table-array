@@ -28,6 +28,11 @@ console.log(padTableA(inputA, { align:'LR' }));          // terse alternative sy
 ![image](https://github.com/user-attachments/assets/60b283a1-6852-497a-9198-9f3e0c6e4677)
 
 ### Example with alignment and formatting
+`npm install esc-colors`
+```javascript
+import colors from 'esc-colors';
+```
+
 ```javascript
 console.log(padTableA(inputA, { align:'LR', fmtA:[ colors.magenta, colors.blue ] }));
 ```
