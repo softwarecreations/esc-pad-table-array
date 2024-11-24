@@ -10,7 +10,7 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
   if (alignA.length  !==0) for (let i=  alignA.length; i<maxColumns; ++i)   alignA[i] =   alignA[i-1]; // repeat last alignment setting as needed
   if (fmtA.length    !==0) for (let i=    fmtA.length; i<maxColumns; ++i)     fmtA[i] =     fmtA[i-1]; // repeat last format function as needed
 
-  const filledInputA = inputA.map( colsA => maxColsA.map( (_, colIndex) => colsA[colIndex] ?? '' ));   // filledInputA has maxColumns for every row
+  const filledInputA = inputA.map( colsA => maxColsA.map( (_, colIndex) => String(colsA[colIndex]) ?? '' )); // filledInputA has maxColumns for every row, we convert to String so that numbers etc will have formattable .length
   const dataRowsA = [headingA].concat(filledInputA).filter( colsA => colsA.length!==0 );
   const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map(row => row[colIndex]?.length ?? 0 )) );
 
