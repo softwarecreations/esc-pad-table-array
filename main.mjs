@@ -22,7 +22,7 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
 
   const filledInputA = inputA.map( colsA => maxColsA.map( (_, colIndex) => colsA[colIndex]===undefined ? '' : String(colsA[colIndex]) )); // filledInputA has maxColumns for every row, we convert to String so that numbers etc will have formattable .length
   const dataRowsA = [headingA].concat(filledInputA);
-  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map(row => row[colIndex]?.length ?? 0 )) );
+  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map(colsA => colsA[colIndex]?.length ?? 0 )) );
 
   const fmtdRowsA = dataRowsA.map( colsA => // apply padding and formatting
     colsA.map( (cell, colIndex) => {
