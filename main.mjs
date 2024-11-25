@@ -1,6 +1,6 @@
 'use strict';
 
-const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true }) => {
+const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ' }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ' }) => {
   if (align) alignA = align.split('');
   const maxColumns = Math.max(...inputA.map( colsA => colsA.length )); // max number of columns of any row
   const maxColsA = Array.from({ length:maxColumns });
@@ -32,7 +32,9 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
     : fmtdRowsA
   ); // optionally concat column arrays into row strings
 
-  return rowDelim ? retFmtdRowsA.join(rowDelim) : retFmtdRowsA; // optionally concat rows into a string
+  const indentS = indentChar.repeat(indent);
+  const rowJoin = rowDelim + indentS;
+  return rowDelim ? (indentS + retFmtdRowsA.join(rowJoin)) : retFmtdRowsA; // optionally concat rows into a string
 };
 
 export default padTableA;
