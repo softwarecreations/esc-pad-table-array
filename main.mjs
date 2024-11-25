@@ -1,6 +1,6 @@
 'use strict';
 
-const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ' }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ' }) => {
+const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ', fmtSubF=s=>s }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ', fmtSubF:s=>s }) => {
   if (align) alignA = align.split('');
   if (!Array.isArray(inputA)) {
     console.error('inputA', inputA);
@@ -21,12 +21,20 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
   if (fmtA.length    !==0) for (let i=    fmtA.length; i<maxColumns; ++i)     fmtA[i] =     fmtA[i-1]; // repeat last format function as needed
 
   const filledInputA = inputA.map( colsA => maxColsA.map( (_, colIndex) => colsA[colIndex]===undefined ? '' : String(colsA[colIndex]) )); // filledInputA has maxColumns for every row, we convert to String so that numbers etc will have formattable .length
+  const rowColCountA = [headingA.length].concat(inputA.map( colsA => colsA.length ));
   const dataRowsA = [headingA].concat(filledInputA);
-  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map(colsA => colsA[colIndex]?.length ?? 0 )) );
+  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map( (colsA, rowIndex) => rowColCountA[rowIndex]===1 ? 0 : (colsA[colIndex]?.length ?? 0) )) );
+  const tableWidth = maxColLengthsA.reduce( (sum, colLength) => sum + colLength, 0) + colDelim.length * (maxColLengthsA.length -1)
 
-  const fmtdRowsA = dataRowsA.map( colsA => // apply padding and formatting
+  const fmtdRowsA = dataRowsA.map( (colsA, rowIndex) => // apply padding and formatting
     colsA.map( (cell, colIndex) => {
+      if (rowColCountA[rowIndex]===1) return ( colIndex > 0 // subheading row
+        ? ''
+        : (fmtSubF(cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)))
+      );
+      if (colIndex > rowColCountA[rowIndex] && trim) return ''; // no more data in this row with trim enabled
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
+      if (colIndex > rowColCountA[rowIndex]) return padding; // no more data in this row, just padding, don't waste CPU on formatting and alignment
       const fmtdCell = typeof fmtA[colIndex]==='function' ? fmtA[colIndex](cell) : cell;
       return alignA[colIndex]==='R' ? `${padding}${fmtdCell}` : `${fmtdCell}${padding}`;
     })

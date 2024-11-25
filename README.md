@@ -79,6 +79,34 @@ console.log('='.repeat(width));
 
 Get the table data and you can flip it any style.
 
+### Example subheadings in your table
+
+Rows with a single column are treated as subheadings, so they 'merge' the adjacent 'cells' and don't affect your other column widths.
+
+If you have a row with a single data column and want it treated as a data row simply add another empty column next to it like `[ 'MYDATA', '' ]`
+
+```javascript
+const inputA = [
+  [ '# these are my fruity computers, make a nice smoothie' ],
+  [ '192.168.1.4', 'papaya.example.org' ],
+  [ '192.168.1.91', 'fig.example.org', 'fig.otherdomain.co.za' ],
+  [ '192.168.1.123', 'watermelon.example.org', 'watermelon.otherdomain.co.za' ],
+  [ '# cooked computers, serve hot' ],
+  [ '192.168.1.201', 'pizza.example.org', 'pizza.otherdomain.co.za' ],
+  [ '192.168.1.211', 'lasagna.example.org', 'lasagna.otherdomain.co.za' ],
+  [ '# drinks' ],
+  [ '192.168.1.214', 'mate.example.org', 'mate.otherdomain.co.za' ],
+];
+
+console.log(padTableA(inputA, {
+  headingA: ['LAN IP', 'HOSTNAME'],
+  align: 'LR',
+  indent: 2,
+  fmtA: [ colors.magenta, colors.blue ],
+  fmtSubF: colors.yellow,
+}));
+```
+
 ## Project goals
 * No dependencies
 * No nonsense
