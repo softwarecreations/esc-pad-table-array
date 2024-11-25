@@ -106,6 +106,11 @@ console.log(padTableA(inputA, {
   fmtSubF: colors.yellow,
 }));
 ```
+![image](https://github.com/user-attachments/assets/26120d00-eb69-4cc8-93ce-5e663984223d)
+
+`const whateverCharYouLike = '.';`
+`paddingChar:whateverCharYouLike, trim:false` also works with subheadings:
+![image](https://github.com/user-attachments/assets/0c061d9c-ff5a-4b5a-8ec9-3f13ba2294bf)
 
 ## Project goals
 * No dependencies
