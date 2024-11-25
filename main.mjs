@@ -2,7 +2,17 @@
 
 const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ' }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ' }) => {
   if (align) alignA = align.split('');
-  const maxColumns = Math.max(...inputA.map( colsA => colsA.length )); // max number of columns of any row
+  if (!Array.isArray(inputA)) {
+    console.error('inputA', inputA);
+    throw new Error(`inputA is not an array. typeof:${typeof inputA}`);
+  }
+  const maxColumns = Math.max(...inputA.map( (colsA, rowIndex) => {
+    if (!Array.isArray(colsA)) {
+      console.error(`inputA row ${rowIndex}`, colsA);
+      throw new Error(`inputA row ${rowIndex} is not an array. typeof:${typeof colsA}`);
+    }
+    return colsA.length
+  })); // max number of columns of any row
   const maxColsA = Array.from({ length:maxColumns });
 
   // repeat last heading/alignment/fmt elements as needed
