@@ -30,12 +30,12 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
     colsA.map( (cell, colIndex) => {
       if (rowColCountA[rowIndex]===1) return ( colIndex > 0 // subheading row
         ? ''
-        : (fmtSubF(cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)))
+        : ( (cell.length===0 ? '' : fmtSubF(cell)) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)) )
       );
       if (colIndex > rowColCountA[rowIndex] && trim) return ''; // no more data in this row with trim enabled
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
       if (colIndex > rowColCountA[rowIndex]) return padding; // no more data in this row, just padding, don't waste CPU on formatting and alignment
-      const fmtdCell = typeof fmtA[colIndex]==='function' ? fmtA[colIndex](cell) : cell;
+      const fmtdCell = (cell.length!==0 && typeof fmtA[colIndex]==='function') ? fmtA[colIndex](cell) : cell;
       return alignA[colIndex]==='R' ? `${padding}${fmtdCell}` : `${fmtdCell}${padding}`;
     })
   );
