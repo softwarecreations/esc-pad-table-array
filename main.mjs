@@ -21,17 +21,21 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
   if (fmtA.length    !==0) for (let i=    fmtA.length; i<maxColumns; ++i)     fmtA[i] =     fmtA[i-1]; // repeat last format function as needed
 
   const filledInputA = inputA.map( colsA => maxColsA.map( (_, colIndex) => colsA[colIndex]===undefined ? '' : String(colsA[colIndex]) )); // filledInputA has maxColumns for every row, we convert to String so that numbers etc will have formattable .length
-  const rowColCountA = [headingA.length].concat(inputA.map( colsA => colsA.length ));
-  const dataRowsA = [headingA].concat(filledInputA);
-  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map( (colsA, rowIndex) => rowColCountA[rowIndex]===1 ? 0 : (colsA[colIndex]?.length ?? 0) )) );
+  const rowColCountA = (headingA.length===0 ? [] : [headingA.length]).concat(inputA.map( colsA => colsA.length ));
+  const dataRowsA    = (headingA.length===0 ? [] : [headingA]).concat(filledInputA);
+  const maxColLengthsA = maxColsA.map( (_, colIndex) => Math.max(...dataRowsA.map( (colsA, rowIndex) => {
+    if (rowColCountA[rowIndex]===1) {
+      dataRowsA[rowIndex].length = 1; // truncate this data row, because all cells in this row are merged to 1 to avoid unnecessary loop iterations and unwanted colDelim's added after this singular cell for the row
+      return 0; // return 0 so that the length of this cell (containing subheading merging across all cells) will not be considered when calculating the max length of the column
+    } else {
+      return colsA[colIndex]?.length ?? 0;
+    }
+  })));
   const tableWidth = maxColLengthsA.reduce( (sum, colLength) => sum + colLength, 0) + colDelim.length * (maxColLengthsA.length -1)
 
   const fmtdRowsA = dataRowsA.map( (colsA, rowIndex) => // apply padding and formatting
     colsA.map( (cell, colIndex) => {
-      if (rowColCountA[rowIndex]===1) return ( colIndex > 0 // subheading row
-        ? ''
-        : ( (cell.length!==0 && typeof fmtSubF==='function' ? fmtSubF(cell) : cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)) )
-      );
+      if (rowColCountA[rowIndex]===1) return (cell.length!==0 && typeof fmtSubF==='function' ? fmtSubF(cell) : cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length));
       if (colIndex > rowColCountA[rowIndex] && trim) return ''; // no more data in this row with trim enabled
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
       if (colIndex > rowColCountA[rowIndex]) return padding; // no more data in this row, just padding, don't waste CPU on formatting and alignment
