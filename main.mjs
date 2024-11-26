@@ -1,6 +1,6 @@
 'use strict';
 
-const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ', fmtSubF=s=>s }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ', fmtSubF:s=>s }) => {
+const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ', fmtSubF=null }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ', fmtSubF:null }) => {
   if (align) alignA = align.split('');
   if (!Array.isArray(inputA)) {
     console.error('inputA', inputA);
@@ -30,7 +30,7 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
     colsA.map( (cell, colIndex) => {
       if (rowColCountA[rowIndex]===1) return ( colIndex > 0 // subheading row
         ? ''
-        : ( (cell.length===0 ? '' : fmtSubF(cell)) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)) )
+        : ( (cell.length!==0 && typeof fmtSubF==='function' ? fmtSubF(cell) : cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length)) )
       );
       if (colIndex > rowColCountA[rowIndex] && trim) return ''; // no more data in this row with trim enabled
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
@@ -42,17 +42,21 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
 
   if (headingA.length!==0 && headingChar) fmtdRowsA.splice(1, 0, headingA.map( (_, colIndex) => headingChar.repeat(maxColLengthsA[colIndex]) )); // insert headingChar's between headingA row and first inputA row
 
-  const retFmtdRowsA = ( colDelim
+  if (indent!==0) {
+    const indentS = indentChar.repeat(indent);
+    fmtdRowsA.forEach( colsA => colsA[0] = indentS + colsA[0] );
+  }
+
+  const retFmtdRowsA = ( colDelim!==null // columns could plausibly be delimited by an empty space, that is falsy, so we only consider null to mean that joining is not desired
+    // optionally concat column arrays into row strings
     ? ( trim
         ? fmtdRowsA.map( colsA => colsA.join(colDelim).trim() )
         : fmtdRowsA.map( colsA => colsA.join(colDelim) )
       )
-    : fmtdRowsA
-  ); // optionally concat column arrays into row strings
+    : fmtdRowsA // leave arrays of columns as the rows
+  );
 
-  const indentS = indentChar.repeat(indent);
-  const rowJoin = rowDelim + indentS;
-  return rowDelim ? (indentS + retFmtdRowsA.join(rowJoin)) : retFmtdRowsA; // optionally concat rows into a string
+  return rowDelim ? retFmtdRowsA.join(rowDelim) : retFmtdRowsA; // optionally concat rows into a string
 };
 
 export default padTableA;
