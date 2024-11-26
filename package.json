@@ -1,6 +1,6 @@
 {
   "name": "esc-pad-table-array",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Tiny 1.7K function pads the cells of a 2D array of strings (table) by column, left/right aligned, optionally formatted, optional headings.",
   "main": "main.mjs",
   "types": "main.d.ts",

@@ -46,16 +46,14 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
 
   if (headingA.length!==0 && headingChar) fmtdRowsA.splice(1, 0, headingA.map( (_, colIndex) => headingChar.repeat(maxColLengthsA[colIndex]) )); // insert headingChar's between headingA row and first inputA row
 
-  if (indent!==0) {
-    const indentS = indentChar.repeat(indent);
-    fmtdRowsA.forEach( colsA => colsA[0] = indentS + colsA[0] );
-  }
+  const indentS = indentChar.repeat(indent);
+  if (indent!==0) fmtdRowsA.forEach( colsA => colsA[0] = indentS + colsA[0] );
 
   const retFmtdRowsA = ( colDelim!==null // columns could plausibly be delimited by an empty space, that is falsy, so we only consider null to mean that joining is not desired
     // optionally concat column arrays into row strings
     ? ( trim
-        ? fmtdRowsA.map( colsA => colsA.join(colDelim).trim() )
-        : fmtdRowsA.map( colsA => colsA.join(colDelim) )
+        ? fmtdRowsA.map( colsA => indentS + colsA.join(colDelim).trim() )
+        : fmtdRowsA.map( colsA =>           colsA.join(colDelim) )
       )
     : fmtdRowsA // leave arrays of columns as the rows
   );
