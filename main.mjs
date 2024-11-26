@@ -35,7 +35,7 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
 
   const fmtdRowsA = dataRowsA.map( (colsA, rowIndex) => // apply padding and formatting
     colsA.map( (cell, colIndex) => {
-      if (rowColCountA[rowIndex]===1) return (cell.length!==0 && typeof fmtSubF==='function' ? fmtSubF(cell) : cell) + (trim ? '' : paddingChar.repeat(tableWidth - cell.length));
+      if (rowColCountA[rowIndex]===1) return (cell.length!==0 && typeof fmtSubF==='function' ? fmtSubF(cell) : cell) + (tableWidth <= cell.length || trim ? '' : paddingChar.repeat(tableWidth - cell.length));
       if (colIndex > rowColCountA[rowIndex] && trim) return ''; // no more data in this row with trim enabled
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
       if (colIndex > rowColCountA[rowIndex]) return padding; // no more data in this row, just padding, don't waste CPU on formatting and alignment
