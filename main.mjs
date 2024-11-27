@@ -40,7 +40,8 @@ const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim
       const padding = paddingChar.repeat(maxColLengthsA[colIndex] - cell.length);
       if (colIndex > rowColCountA[rowIndex]) return padding; // no more data in this row, just padding, don't waste CPU on formatting and alignment
       const fmtdCell = (cell.length!==0 && typeof fmtA[colIndex]==='function') ? fmtA[colIndex](cell) : cell;
-      return alignA[colIndex]==='R' ? `${padding}${fmtdCell}` : `${fmtdCell}${padding}`;
+      const align = alignA[colIndex]!=='H' ? alignA[colIndex] : (cell.includes('.') ? 'R' : 'L');
+      return align==='R' ? `${padding}${fmtdCell}` : `${fmtdCell}${padding}`;
     })
   );
 
