@@ -1,6 +1,6 @@
 'use strict';
 
-const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ', fmtSubF=null }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ', fmtSubF:null }) => {
+export const padTableA = (inputA, { headingA=[], alignA=[], align='', fmtA=[], colDelim='  ', rowDelim='\n', headingChar='-', paddingChar=' ', trim=true, indent=0, indentChar=' ', fmtSubF=null }={ headingA:[], alignA:[], align:'', fmtA:[], colDelim:'  ', rowDelim:'\n', headingChar:'-', paddingChar:' ', trim:true, indent:0, indentChar:' ', fmtSubF:null }) => {
   if (align) alignA = align.split('');
   if (!Array.isArray(inputA)) {
     console.error('inputA', inputA);
